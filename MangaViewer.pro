@@ -11,16 +11,17 @@ CONFIG += c++17
 DEFINES *= QT_USE_QSTRINGBUILDER
 
 SOURCES += \
+    appUtils.cpp \
     basescrollbar.cpp \
     basesettings.cpp \
     main.cpp \
     mangaviewer.cpp
 
 HEADERS += \
+    appUtils.h \
     basescrollbar.h \
     basesettings.h \
-    mangaviewer.h \
-    projectGlobalSettings.h
+    mangaviewer.h
 
 FORMS += \
     basesettings.ui \

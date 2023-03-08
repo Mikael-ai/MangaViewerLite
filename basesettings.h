@@ -12,18 +12,11 @@ class BaseSettings : public QWidget
     Q_OBJECT
 
 public:
-    QString lastPickedBackground;
-    QPalette backgroundButtonPalette;
-
-private:
-    QVariantMap m_config;
-
-public:
-    explicit BaseSettings(QWidget *parent = nullptr);
+    explicit BaseSettings(QWidget *mainWindow,
+                          QWidget *parent = nullptr);
     ~BaseSettings();
 
-    QVariantMap getConfig(bool needToLoad = false);
-    void setUiValues();
+    void setUiValues(QVariantMap config);
 
 signals:
     void settingsWereSaved(const QVariantMap &config);

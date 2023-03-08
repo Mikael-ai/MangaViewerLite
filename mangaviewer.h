@@ -2,7 +2,6 @@
 #define MANGAVIEWER_H
 
 #include <QMainWindow>
-#include <QBoxLayout>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MangaViewer; }
@@ -10,6 +9,7 @@ QT_END_NAMESPACE
 
 class BaseScrollBar;
 class BaseSettings;
+class QBoxLayout;
 class QLabel;
 
 class MangaViewer : public QMainWindow
@@ -18,11 +18,10 @@ class MangaViewer : public QMainWindow
 
 private:
     QBoxLayout *layout;
-    BaseScrollBar *scrollBar;
-    BaseSettings *settingsWidget;
+    BaseScrollBar *vScrollBar;
+    BaseScrollBar *hScrollBar;
 
     uint32_t m_sheetWidth;
-    uint32_t m_scrollStep;
     QString m_background;
 
     QPoint lastContextMenuPos;
@@ -36,6 +35,7 @@ public:
     ~MangaViewer();
 
     void openFolder(const QString &path);
+    void closeCurrentManga();
     void setWidthValue(const uint32_t newWitdh);
 
 public slots:

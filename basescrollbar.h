@@ -6,7 +6,8 @@
 class BaseScrollBar : public QScrollBar
 {
 public:
-    BaseScrollBar(QWidget *parent = nullptr);
+    BaseScrollBar(Qt::Orientation orientation,
+                  QWidget *parent = nullptr);
 };
 
 #endif // BASESCROLLBAR_H

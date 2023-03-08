@@ -1,7 +1,8 @@
 #include "basescrollbar.h"
 
-BaseScrollBar::BaseScrollBar(QWidget *parent)
+BaseScrollBar::BaseScrollBar(Qt::Orientation orientation,
+                             QWidget *parent)
     : QScrollBar(parent)
 {
-    this->setOrientation(Qt::Vertical);
+    this->setOrientation(orientation);
 }

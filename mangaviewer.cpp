@@ -2,7 +2,7 @@
 #include "ui_mangaviewer.h"
 #include "basescrollbar.h"
 #include "basesettings.h"
-#include "projectGlobalSettings.h"
+#include "appUtils.h"
 
 #include <QLabel>
 #include <QDebug>
@@ -19,34 +19,30 @@ MangaViewer::MangaViewer(QWidget *parent)
     ui->setupUi(this);
 
     layout = new QVBoxLayout(ui->scrollAreaWidgetContents);
-    scrollBar = new BaseScrollBar(ui->scrollArea);
-    lastContextMenuPos = QPoint();
-
     layout->setAlignment(Qt::AlignCenter);
 
-    ui->scrollArea->setVerticalScrollBar(scrollBar);
+    vScrollBar = new BaseScrollBar(Qt::Vertical, ui->scrollArea);
+    hScrollBar = new BaseScrollBar(Qt::Horizontal, ui->scrollArea);
+
+    ui->scrollArea->setVerticalScrollBar(vScrollBar);
+    ui->scrollArea->setHorizontalScrollBar(hScrollBar);
     ui->centralwidget->setContextMenuPolicy(Qt::CustomContextMenu);
 
-    settingsWidget = new BaseSettings();
+    loadConfigFromVariant(appUtils->getConfig(true));
 
-    loadConfigFromVariant(settingsWidget->getConfig(false));
-
-    openFolder("C:/Users/Mikael/Documents/Manga/Claymore/1-1");
+    //openFolder("C:/Users/Mikael/Documents/Manga/Claymore/1-1");
 
     connect(ui->centralwidget, SIGNAL(customContextMenuRequested(QPoint)),
             this, SLOT(showContextMenu(QPoint)));
-    connect(settingsWidget, SIGNAL(settingsWereSaved(QVariantMap)),
-            this, SLOT(loadConfigFromVariant(QVariantMap)));
+
     connect(this, &MangaViewer::onWidthValueChanged,
             this, &MangaViewer::updateSheetWidth);
 }
 
 MangaViewer::~MangaViewer()
 {
-    if (scrollBar)
-        delete scrollBar;
-    if (settingsWidget)
-        delete settingsWidget;
+    if (vScrollBar)
+        delete vScrollBar;
 
     delete ui;
 }
@@ -56,6 +52,8 @@ void MangaViewer::openFolder(const QString &path)
     QDir dir(path);
     if (dir.isEmpty())
         return;
+
+    closeCurrentManga();
 
     QFileInfoList list  = dir.entryInfoList();
     foreach (const QFileInfo &fileInfo, list)
@@ -76,6 +74,20 @@ void MangaViewer::openFolder(const QString &path)
     currentFilePath = path;
 }
 
+void MangaViewer::closeCurrentManga()
+{
+    if (sheets.isEmpty())
+        return;
+
+    QLayoutItem *child = nullptr;
+    while ((child = layout->takeAt(0)))
+    {
+        delete child;
+        child = Q_NULLPTR;
+    }
+    sheets.clear();
+}
+
 void MangaViewer::setWidthValue(const uint32_t newWitdh)
 {
     if (m_sheetWidth == newWitdh)
@@ -87,11 +99,10 @@ void MangaViewer::setWidthValue(const uint32_t newWitdh)
 
 void MangaViewer::loadConfigFromVariant(const QVariantMap &config)
 {
-    setWidthValue(config.value("sheetWidth", defaultSheetWidth).toUInt());
-    m_scrollStep = config.value("scrollStep", defaultScrollStep).toUInt();
-    m_background = config.value("background", defaultBackground).toString();
-
-    scrollBar->setSingleStep(m_scrollStep);
+    setWidthValue(config.value(key_sheetWidth, defaultSheetWidth).toUInt());
+    vScrollBar->setSingleStep(config.value(key_vScrollStep, defaultVScrollStep).toUInt());
+    hScrollBar->setSingleStep(config.value(key_hScrollStep, defaultHScrollStep).toUInt());
+    m_background = config.value(key_background, defaultBackground).toString();
 }
 
 void MangaViewer::updateSheetWidth()
@@ -127,22 +138,24 @@ void MangaViewer::actionOpenFileClicked()
                                                     QDir(lastChosenPath).exists()
                                                     ? lastChosenPath
                                                     : lastChosenPath = QDir::currentPath(),
-                                                    tr("Manga Files (*.zip *.cbr *.rar *.7z)"));
+                                                    tr("Manga (*.cbr *.zip)"));
 }
 
 void MangaViewer::actionOpenFolderClicked()
 {
-    QString fileName = QFileDialog::getExistingDirectory(this,
-                                                         tr("Open file"),
-                                                         QDir(lastChosenPath).exists()
-                                                         ? lastChosenPath
-                                                         : lastChosenPath = QDir::currentPath(),
-                                                         QFileDialog::ShowDirsOnly);
+    QString folderPath = QFileDialog::getExistingDirectory(this,
+                                                           tr("Open file"),
+                                                           QDir(lastChosenPath).exists()
+                                                           ? lastChosenPath
+                                                           : lastChosenPath = QDir::currentPath(),
+                                                           QFileDialog::ShowDirsOnly);
+    openFolder(folderPath);
 }
 
 void MangaViewer::actionSettingsClicked()
 {
-    settingsWidget->setUiValues();
+    QScopedPointer<BaseSettings, ScopedPointerCustomDeleter> settingsWidget(new BaseSettings(this));
+    settingsWidget->setWindowModality(Qt::ApplicationModal);
 
     QPoint globalPosition = this->mapToGlobal(lastContextMenuPos);
     settingsWidget->move(globalPosition);
