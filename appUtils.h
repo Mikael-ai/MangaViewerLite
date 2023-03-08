@@ -3,7 +3,6 @@
 
 #include <QWidget>
 
-
 constexpr uint32_t defaultSheetWidth = 800;
 constexpr uint32_t defaultVScrollStep = 60;
 constexpr uint32_t defaultHScrollStep = 60;
@@ -22,14 +21,25 @@ private:
     static AppUtils *p_appUtils;
     QVariantMap m_config;
 
+    QString tempDirPath;
+    QString settingsDirPath;
 private:
     AppUtils();
     ~AppUtils();
 
 public:
     static AppUtils* getInstance();
+
     QVariantMap getConfig(bool needToReload = false);
     void saveConfig(QVariantMap config);
+
+    inline QString getTempDirPath() const { return tempDirPath; };
+    inline QString getSettingsDirPath() const { return settingsDirPath; };
+
+    void checkAppDirs() const;
+
+    void unzipFile(const QString &filePath) const;
+    void cleanTempDir() const;
 };
 
 

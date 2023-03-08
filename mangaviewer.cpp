@@ -71,7 +71,9 @@ void MangaViewer::openFolder(const QString &path)
         sheet->setAlignment(Qt::AlignHCenter);
         sheets[sheet] = sheetPixmap;
     }
-    currentFilePath = path;
+
+    if (path != appUtils->getTempDirPath())
+        currentFilePath = path;
 }
 
 void MangaViewer::closeCurrentManga()
@@ -133,12 +135,18 @@ void MangaViewer::showContextMenu(const QPoint &pos)
 
 void MangaViewer::actionOpenFileClicked()
 {
-    QString fileName = QFileDialog::getOpenFileName(this,
+    QString filePath = QFileDialog::getOpenFileName(this,
                                                     tr("Open file"),
                                                     QDir(lastChosenPath).exists()
                                                     ? lastChosenPath
                                                     : lastChosenPath = QDir::currentPath(),
-                                                    tr("Manga (*.cbr *.zip)"));
+                                                    tr("Manga (*.cbr *.zip *.rar *.7z)"));
+    if (filePath.isEmpty())
+        return;
+
+    appUtils->cleanTempDir();
+    appUtils->unzipFile(filePath);
+    openFolder(appUtils->getTempDirPath());
 }
 
 void MangaViewer::actionOpenFolderClicked()
@@ -149,6 +157,9 @@ void MangaViewer::actionOpenFolderClicked()
                                                            ? lastChosenPath
                                                            : lastChosenPath = QDir::currentPath(),
                                                            QFileDialog::ShowDirsOnly);
+    if (folderPath.isEmpty())
+        return;
+
     openFolder(folderPath);
 }
 
