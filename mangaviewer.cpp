@@ -31,7 +31,7 @@ MangaViewer::MangaViewer(QWidget *parent)
     loadConfigFromVariant(appUtils->getConfig(true));
     changeBackround(appUtils->getBackground());
 
-    //openFolder("C:/Users/Mikael/Documents/Manga/Claymore/1-1");
+    openFolder("C:/Users/Mikael/Documents/Manga/Claymore/1-1");
 
     connect(ui->centralwidget, SIGNAL(customContextMenuRequested(QPoint)),
             this, SLOT(showContextMenu(QPoint)));

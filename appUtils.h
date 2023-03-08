@@ -7,7 +7,7 @@ constexpr uint32_t defaultSheetWidth = 800;
 constexpr uint32_t defaultVScrollStep = 60;
 constexpr uint32_t defaultHScrollStep = 60;
 // QString doesn't have constexpr constructor
-constexpr const char* defaultBackground = "#484d57";
+constexpr const char* defaultBackground = "#3f424c";
 
 constexpr const char* key_sheetWidth= "sheetWidth";
 constexpr const char* key_vScrollStep = "vScrollStep";
