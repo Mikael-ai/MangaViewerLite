@@ -22,7 +22,6 @@ private:
     BaseScrollBar *hScrollBar;
 
     uint32_t m_sheetWidth;
-    QString m_background;
 
     QPoint lastContextMenuPos;
     QString lastChosenPath;
@@ -42,6 +41,7 @@ public slots:
     void showContextMenu(const QPoint &pos);
     void loadConfigFromVariant(const QVariantMap &config);
     void updateSheetWidth();
+    void changeBackround(const QString &background);
 
     void actionExitClicked();
     void actionSettingsClicked();

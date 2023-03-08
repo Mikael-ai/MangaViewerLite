@@ -3,8 +3,8 @@
 #include "appUtils.h"
 
 #include <QJsonDocument>
+#include <QColorDialog>
 #include <QDir>
-#include <QPalette>
 
 BaseSettings::BaseSettings(QWidget *mainWindow,
                            QWidget *parent)
@@ -18,6 +18,8 @@ BaseSettings::BaseSettings(QWidget *mainWindow,
 
     connect(this, SIGNAL(settingsWereSaved(QVariantMap)),
             mainWindow, SLOT(loadConfigFromVariant(QVariantMap)));
+    connect(this, SIGNAL(backgroundWasChanged(QString)),
+            mainWindow, SLOT(changeBackround(QString)));
 }
 
 BaseSettings::~BaseSettings()
@@ -37,6 +39,7 @@ void BaseSettings::setUiValues(QVariantMap config)
     ui->widthLineEdit->setText(QString::number(sheetWidth));
     ui->vscrollLineEdit->setText(QString::number(vScrollStep));
     ui->hscrollLineEdit->setText(QString::number(hScrollStep));
+    ui->backgroundButton->setStyleSheet(appUtils->getBackgroundStyleSheet(background));
 }
 
 void BaseSettings::on_saveButton_released()
@@ -45,11 +48,25 @@ void BaseSettings::on_saveButton_released()
     config[key_sheetWidth] = ui->widthLineEdit->text().toUInt();
     config[key_vScrollStep] = ui->vscrollLineEdit->text().toUInt();
     config[key_hScrollStep] = ui->hscrollLineEdit->text().toUInt();
-    //config[key_background] = lastPickedBackground;
+    config[key_background] = lastPickedBackground;
 
     appUtils->saveConfig(config);
 
     emit settingsWereSaved(config);
     this->close();
+}
+
+
+void BaseSettings::on_backgroundButton_released()
+{
+    const QString selectedColor = QColorDialog::getColor(QColor(appUtils->getBackground())).name();
+    if (selectedColor == QStringLiteral("#000000"))
+        return;
+
+    ui->backgroundButton->setStyleSheet(appUtils->getBackgroundStyleSheet(selectedColor));
+    appUtils->setBackground(selectedColor);
+    lastPickedBackground = selectedColor;
+
+    emit backgroundWasChanged(selectedColor);
 }
 

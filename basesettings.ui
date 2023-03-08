@@ -7,11 +7,16 @@
     <x>0</x>
     <y>0</y>
     <width>366</width>
-    <height>426</height>
+    <height>323</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget{
+	background-color: #2b2e34;
+}</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="sizeConstraint">
@@ -42,6 +47,11 @@
        <property name="layoutDirection">
         <enum>Qt::LeftToRight</enum>
        </property>
+       <property name="styleSheet">
+        <string notr="true">QLabel{
+	color: #e7e2d6;
+}</string>
+       </property>
        <property name="text">
         <string>Sheet width</string>
        </property>
@@ -61,8 +71,21 @@
          <height>30</height>
         </size>
        </property>
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
        <property name="toolTip">
         <string/>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLineEdit {
+    border-radius: 10px;
+	color: #e7e2d6;
+    padding: 0 8px;
+    background: #3e424b;
+}</string>
        </property>
        <property name="inputMask">
         <string/>
@@ -99,6 +122,11 @@
          <pointsize>14</pointsize>
         </font>
        </property>
+       <property name="styleSheet">
+        <string notr="true">QLabel{
+	color: #e7e2d6;
+}</string>
+       </property>
        <property name="text">
         <string>VScroll step</string>
        </property>
@@ -114,6 +142,19 @@
          <width>0</width>
          <height>30</height>
         </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLineEdit {
+    border-radius: 10px;
+	color: #e7e2d6;
+    padding: 0 8px;
+    background: #3e424b;
+}</string>
        </property>
        <property name="placeholderText">
         <string/>
@@ -144,6 +185,11 @@
          <pointsize>14</pointsize>
         </font>
        </property>
+       <property name="styleSheet">
+        <string notr="true">QLabel{
+	color: #e7e2d6;
+}</string>
+       </property>
        <property name="text">
         <string>HScroll step</string>
        </property>
@@ -162,6 +208,19 @@
          <width>0</width>
          <height>30</height>
         </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLineEdit {
+    border-radius: 10px;
+	color: #e7e2d6;
+    padding: 0 8px;
+    background: #3e424b;
+}</string>
        </property>
       </widget>
      </item>
@@ -195,6 +254,11 @@
          <pointsize>14</pointsize>
         </font>
        </property>
+       <property name="styleSheet">
+        <string notr="true">QLabel{
+	color: #e7e2d6;
+}</string>
+       </property>
        <property name="text">
         <string>Background</string>
        </property>
@@ -215,7 +279,7 @@
         </size>
        </property>
        <property name="autoFillBackground">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
        <property name="text">
         <string/>
@@ -254,6 +318,20 @@
          <family>Sitka Text</family>
          <pointsize>14</pointsize>
         </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    border-radius: 10px;
+    background: #3e424b;
+	color: #e7e2d6;
+}
+
+QPushButton:hover{
+	border: 3px solid #3e424b;
+    border-radius: 10px;
+    background: #484d57;
+	color: #e7e2d6;
+}</string>
        </property>
        <property name="text">
         <string>Save</string>

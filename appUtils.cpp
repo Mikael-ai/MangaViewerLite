@@ -43,7 +43,7 @@ QVariantMap AppUtils::getConfig(bool needToReload)
     return m_config;
 }
 
-void AppUtils::saveConfig(QVariantMap config)
+void AppUtils::saveConfig(const QVariantMap &config)
 {
     QJsonDocument jsonConfig = QJsonDocument::fromVariant(config);
 
@@ -53,6 +53,15 @@ void AppUtils::saveConfig(QVariantMap config)
     jsonConfigFile.write(jsonConfig.toJson());
 
     m_config = config;
+}
+
+QString AppUtils::getBackgroundStyleSheet(const QString &background) const
+{
+    return QString("QPushButton { background-color: ")
+            % background % QString(";")
+            % QString("border: 2px solid black;")
+            % QString("border-radius: 7px;")
+            % QString("}");
 }
 
 void AppUtils::checkAppDirs() const
