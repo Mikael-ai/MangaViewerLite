@@ -72,7 +72,68 @@ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {
 }
 QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
 	background: none;
-}</string>
+}
+
+/* HORIZONTAL PART */
+/*  Thanks to Wanderson-Magalhaes for example */
+
+ QScrollBar:horizontal {
+	border: none;
+    background: rgb(45, 45, 68);
+    height: 14px;
+    margin: 0 15px 0 15px;
+	border-radius: 0px;
+ }
+
+/*  HANDLE BAR HORIZONTAL */
+QScrollBar::handle:horizontal {	
+	background-color: rgb(80, 80, 122);
+	min-width: 30px;
+	border-radius: 5px;
+}
+QScrollBar::handle:horizontal:hover{	
+	background-color: rgb(80, 100, 160);
+}
+
+/* BTN TOP - SCROLLBAR */
+QScrollBar::sub-line:horizontal {
+	border: none;
+	background-color: rgb(59, 59, 90);
+	width: 15px;
+	border-top-left-radius: 7px;
+	border-bottom-left-radius: 7px;
+	subcontrol-position: left;
+	subcontrol-origin: margin;
+}
+QScrollBar::sub-line:horizontal:hover {	
+	background-color: rgb(80, 100, 160);
+}
+
+/* BTN BOTTOM - SCROLLBAR */
+QScrollBar::add-line:horizontal {
+	border: none;
+	background-color: rgb(59, 59, 90);
+	width: 15px;
+	border-top-right-radius: 7px;
+	border-bottom-right-radius: 7px;
+	subcontrol-position: right;
+	subcontrol-origin: margin;
+}
+QScrollBar::add-line:horizontal:hover {	
+	background-color: rgb(80, 100, 160);
+}
+
+/* RESET ARROW */
+QScrollBar::right-arrow:horizontal, QScrollBar::left-arrow:horizontal {
+	background: none;
+}
+QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
+	background: none;
+}
+
+
+
+</string>
       </property>
       <property name="widgetResizable">
        <bool>true</bool>
