@@ -29,7 +29,6 @@ MangaViewer::MangaViewer(QWidget *parent)
     ui->centralwidget->setContextMenuPolicy(Qt::CustomContextMenu);
 
     loadConfigFromVariant(appUtils->getConfig(true));
-    changeBackround(appUtils->getBackground());
 
     openFolder("C:/Users/Mikael/Documents/Manga/Claymore/1-1");
 
@@ -103,9 +102,12 @@ void MangaViewer::setWidthValue(const uint32_t newWitdh)
 void MangaViewer::loadConfigFromVariant(const QVariantMap &config)
 {
     setWidthValue(config.value(key_sheetWidth, defaultSheetWidth).toUInt());
+
     vScrollBar->setSingleStep(config.value(key_vScrollStep, defaultVScrollStep).toUInt());
     hScrollBar->setSingleStep(config.value(key_hScrollStep, defaultHScrollStep).toUInt());
-    appUtils->setBackground(config.value(key_background, defaultBackground).toString());
+
+    ui->centralwidget->setStyleSheet(QString("QWidget { background-color: %1; } ")
+                                     .arg(config.value(key_background, defaultBackground).toString()));
 }
 
 void MangaViewer::updateSheetWidth()

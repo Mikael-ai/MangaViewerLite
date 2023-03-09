@@ -18,8 +18,6 @@ BaseSettings::BaseSettings(QWidget *mainWindow,
 
     connect(this, SIGNAL(settingsWereSaved(QVariantMap)),
             mainWindow, SLOT(loadConfigFromVariant(QVariantMap)));
-    connect(this, SIGNAL(backgroundWasChanged(QString)),
-            mainWindow, SLOT(changeBackround(QString)));
 }
 
 BaseSettings::~BaseSettings()
@@ -48,7 +46,7 @@ void BaseSettings::on_saveButton_released()
     config[key_sheetWidth] = ui->widthLineEdit->text().toUInt();
     config[key_vScrollStep] = ui->vscrollLineEdit->text().toUInt();
     config[key_hScrollStep] = ui->hscrollLineEdit->text().toUInt();
-    config[key_background] = lastPickedBackground;
+    config[key_background] = appUtils->getBackground();
 
     appUtils->saveConfig(config);
 
@@ -65,8 +63,5 @@ void BaseSettings::on_backgroundButton_released()
 
     ui->backgroundButton->setStyleSheet(appUtils->getBackgroundStyleSheet(selectedColor));
     appUtils->setBackground(selectedColor);
-    lastPickedBackground = selectedColor;
-
-    emit backgroundWasChanged(selectedColor);
 }
 
