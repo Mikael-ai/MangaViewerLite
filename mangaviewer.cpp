@@ -26,6 +26,8 @@ MangaViewer::MangaViewer(QWidget *parent)
 
     ui->scrollArea->setVerticalScrollBar(vScrollBar);
     ui->scrollArea->setHorizontalScrollBar(hScrollBar);
+    ui->scrollArea->setStyleSheet(appUtils->getBigAssScrollAreaStyleSheet());
+
     ui->centralwidget->setContextMenuPolicy(Qt::CustomContextMenu);
 
     loadConfigFromVariant(appUtils->getConfig(true));

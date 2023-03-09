@@ -57,11 +57,23 @@ void AppUtils::saveConfig(const QVariantMap &config)
 
 QString AppUtils::getBackgroundStyleSheet(const QString &background) const
 {
-    return QString("QPushButton { background-color: ")
-            % background % QString(";")
-            % QString("border: 2px solid black;")
-            % QString("border-radius: 7px;")
-            % QString("}");
+    return QString("QPushButton { background-color: %1; border: 2px solid black; border-radius: 7px;")
+            .arg(background);
+}
+
+QString AppUtils::getBigAssScrollAreaStyleSheet() const
+{
+    QString styleSheet;
+
+    QFile styleSheetFile(":/style/resources/ScrollAreaStyleSheet.txt");
+    if (styleSheetFile.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        QTextStream in(&styleSheetFile);
+        while (!in.atEnd())
+            styleSheet += in.readLine();
+    }
+
+    return styleSheet;
 }
 
 void AppUtils::checkAppDirs() const

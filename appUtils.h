@@ -41,6 +41,7 @@ public:
     inline void setBackground(const QString &background) { m_background = background; }
 
     QString getBackgroundStyleSheet(const QString &background) const;
+    QString getBigAssScrollAreaStyleSheet() const;
 
     void checkAppDirs() const;
 
