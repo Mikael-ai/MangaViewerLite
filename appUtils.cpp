@@ -57,7 +57,7 @@ void AppUtils::saveConfig(const QVariantMap &config)
 
 QString AppUtils::getBackgroundStyleSheet(const QString &background) const
 {
-    return QString("QPushButton { background-color: %1; border: 2px solid black; border-radius: 7px;")
+    return QString("QPushButton { background-color: %1; border: 2px solid black; border-radius: 7px;}")
             .arg(background);
 }
 
@@ -76,14 +76,23 @@ QString AppUtils::getBigAssScrollAreaStyleSheet() const
     return styleSheet;
 }
 
-void AppUtils::checkAppDirs() const
+void AppUtils::checkAppDirs()
 {
     QDir temp(tempDirPath);
     QDir settings(settingsDirPath);
     if (!temp.exists())
         temp.mkdir(tempDirPath);
     if (!settings.exists())
+    {
+        QVariantMap config;
+        config[key_sheetWidth] = defaultSheetWidth;
+        config[key_hScrollStep] = defaultHScrollStep;
+        config[key_vScrollStep] = defaultVScrollStep;
+        config[key_background] = defaultBackground;
+
         settings.mkdir(settingsDirPath);
+        saveConfig(config);
+    }
 }
 
 void AppUtils::unzipFile(const QString &filePath) const

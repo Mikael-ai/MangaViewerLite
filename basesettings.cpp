@@ -61,7 +61,7 @@ void BaseSettings::on_backgroundButton_released()
     if (selectedColor == QStringLiteral("#000000"))
         return;
 
-    ui->backgroundButton->setStyleSheet(appUtils->getBackgroundStyleSheet(selectedColor));
     appUtils->setBackground(selectedColor);
+    ui->backgroundButton->setStyleSheet(appUtils->getBackgroundStyleSheet(selectedColor));
 }
 

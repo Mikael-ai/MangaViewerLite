@@ -2,6 +2,7 @@
 #define APPUTILS_H
 
 #include <QWidget>
+#include <QMap>
 
 constexpr uint32_t defaultSheetWidth = 800;
 constexpr uint32_t defaultVScrollStep = 60;
@@ -43,7 +44,7 @@ public:
     QString getBackgroundStyleSheet(const QString &background) const;
     QString getBigAssScrollAreaStyleSheet() const;
 
-    void checkAppDirs() const;
+    void checkAppDirs();
 
     void unzipFile(const QString &filePath) const;
     void cleanTempDir() const;

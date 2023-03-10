@@ -32,7 +32,7 @@ MangaViewer::MangaViewer(QWidget *parent)
 
     loadConfigFromVariant(appUtils->getConfig(true));
 
-    openFolder("C:/Users/Mikael/Documents/Manga/Claymore/1-1");
+    //openFolder("D:/Manga/Claymore/1-1");
 
     connect(ui->centralwidget, SIGNAL(customContextMenuRequested(QPoint)),
             this, SLOT(showContextMenu(QPoint)));
@@ -103,13 +103,20 @@ void MangaViewer::setWidthValue(const uint32_t newWitdh)
 
 void MangaViewer::loadConfigFromVariant(const QVariantMap &config)
 {
-    setWidthValue(config.value(key_sheetWidth, defaultSheetWidth).toUInt());
+    const uint32_t sheetWidth = config.value(key_sheetWidth, defaultSheetWidth).toUInt();
+    const uint32_t vScrollStep = config.value(key_vScrollStep, defaultVScrollStep).toUInt();
+    const uint32_t hScrollStep = config.value(key_hScrollStep, defaultHScrollStep).toUInt();
+    const QString background = config.value(key_background, defaultBackground).toString();
 
-    vScrollBar->setSingleStep(config.value(key_vScrollStep, defaultVScrollStep).toUInt());
-    hScrollBar->setSingleStep(config.value(key_hScrollStep, defaultHScrollStep).toUInt());
+    const QString centalWidgetStyleSheet = QString("QWidget { background-color: %1; } ")
+            .arg(background);
 
-    ui->centralwidget->setStyleSheet(QString("QWidget { background-color: %1; } ")
-                                     .arg(config.value(key_background, defaultBackground).toString()));
+    setWidthValue(sheetWidth);
+    vScrollBar->setSingleStep(vScrollStep);
+    hScrollBar->setSingleStep(hScrollStep);
+    ui->centralwidget->setStyleSheet(centalWidgetStyleSheet);
+
+    appUtils->setBackground(background);
 }
 
 void MangaViewer::updateSheetWidth()
