@@ -54,6 +54,7 @@ public slots:
     void loadConfigFromVariant(const QVariantMap &config);
     void updateSheetWidth();
     void closeCurrentManga();
+    void manageBorder();
 
     void actionExitClicked();
     void actionSettingsClicked();

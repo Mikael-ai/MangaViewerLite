@@ -38,8 +38,6 @@ MangaViewer::MangaViewer(QWidget *parent)
 
     loadConfigFromVariant(appUtils->getConfig(true));
 
-    //openFolder("D:/Manga/Claymore/1-1");
-
     connect(ui->centralwidget, SIGNAL(customContextMenuRequested(QPoint)),
             this, SLOT(showContextMenu(QPoint)));
 
@@ -122,6 +120,13 @@ void MangaViewer::closeCurrentManga()
     sheets.clear();
 
     appUtils->cleanTempDir();
+}
+
+void MangaViewer::manageBorder()
+{
+    ui->scrollArea->setFrameShape((ui->scrollArea->frameShape() != QFrame::NoFrame)
+                                  ? QFrame::NoFrame
+                                  : QFrame::StyledPanel);
 }
 
 void MangaViewer::setWidthValue(const uint32_t newWitdh)
@@ -255,6 +260,14 @@ void MangaViewer::showContextMenu(const QPoint &pos)
     openFileSubMenu->addAction(tr("Images"), this, SLOT(actionOpenImagesClicked()));
     // Main menu
     contextMenu->addAction(tr("Close file"), this, SLOT(closeCurrentManga()));
+
+    // Oof
+    contextMenu->addAction(tr((ui->scrollArea->frameShape() != QFrame::NoFrame)
+                              ? "Disable border"
+                              : "Enable border"),
+                           this,
+                           SLOT(manageBorder()));
+
     contextMenu->addAction(tr("Settings"), this, SLOT(actionSettingsClicked()));
     contextMenu->addAction(tr("Exit"), this, SLOT(actionExitClicked()));
 

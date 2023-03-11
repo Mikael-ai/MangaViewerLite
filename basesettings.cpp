@@ -16,6 +16,7 @@ BaseSettings::BaseSettings(QWidget *mainWindow,
 
     setUiValues(appUtils->getConfig(true));
 
+
     connect(this, SIGNAL(settingsWereSaved(QVariantMap)),
             mainWindow, SLOT(loadConfigFromVariant(QVariantMap)));
 
@@ -62,18 +63,15 @@ void BaseSettings::on_saveButton_released()
 
 void BaseSettings::on_backgroundButton_released()
 {
-    qDebug() << "in config = " << appUtils->getConfigValue(key_background).toString();
     QColor selectedColor(appUtils->getConfigValue(key_background).toString());
     QString selectedColorName = QColorDialog::getColor(selectedColor).name();
-    qDebug() << "selected = " << selectedColorName;
-    /*
     if ((selectedColorName == QStringLiteral("#000000")
          && selectedColorName != lastPickedBackground)
         || selectedColorName.isEmpty())
     {
         lastPickedBackground = appUtils->getConfigValue(key_background).toString();
         return;
-    }*/
+    }
 
     lastPickedBackground = selectedColorName;
 
