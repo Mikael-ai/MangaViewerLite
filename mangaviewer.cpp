@@ -215,7 +215,8 @@ bool MangaViewer::event(QEvent *event)
     if (event->type() == QEvent::KeyPress)
     {
         QKeyEvent *ke = static_cast<QKeyEvent *>(event);
-        if (ke->key() == Qt::Key_Space)
+        if (ke->key() == Qt::Key_Space
+            || ke->key() == Qt::Key_F11)
         {
             setWindowState((windowState() == Qt::WindowFullScreen)
                            ? Qt::WindowNoState
