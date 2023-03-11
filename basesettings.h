@@ -11,6 +11,8 @@ class BaseSettings : public QWidget
 {
     Q_OBJECT
 
+private:
+    QString lastPickedBackground;
 public:
     explicit BaseSettings(QWidget *mainWindow,
                           QWidget *parent = nullptr);

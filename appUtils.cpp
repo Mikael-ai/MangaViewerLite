@@ -1,7 +1,6 @@
 #include "appUtils.h"
 
 #include <QJsonDocument>
-//#include <private/qzipwriter_p.h>
 #include <private/qzipreader_p.h>
 #include <QDir>
 
@@ -9,6 +8,8 @@ AppUtils* AppUtils::p_appUtils = nullptr;
 
 AppUtils::AppUtils()
 {
+    getConfig(true);
+
     tempDirPath = QDir::currentPath() % QString("/temp");
     settingsDirPath = QDir::currentPath() % QString("/settings");
     checkAppDirs();
@@ -55,58 +56,52 @@ void AppUtils::saveConfig(const QVariantMap &config)
     m_config = config;
 }
 
-QString AppUtils::constructStyleSheet(const QString &widget,
-                                      const QString &color) const
+QVariant AppUtils::getConfigValue(const QString &key) const
 {
-    QString styleSheet;
-    const QString suffix = (color.isEmpty())
+    return m_config.value(key);
+}
+
+QString AppUtils::getStyleSheet(const QString &widget,
+                                const bool isBase) const
+{
+    const QString suffix = (isBase)
                            ? "StyleSheetBase"
                            : "StyleSheet";
 
     const QString filePath = QString(":/style/resources/%1%2.txt").arg(widget,
                                                                        suffix);
+    QString styleSheet;
     QFile styleSheetFile(filePath);
     if (styleSheetFile.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         QTextStream in(&styleSheetFile);
         while (!in.atEnd())
             styleSheet += in.readLine();
-
-        if (!color.isEmpty())
-            styleSheet = styleSheet.arg(color);
     }
-
     return styleSheet;
+}
+
+QString AppUtils::constructStyleSheet(const QString &widget,
+                                      const QString &color) const
+{
+    if (color.isEmpty())
+        return getStyleSheet(widget);
+
+    return getStyleSheet(widget, false).arg(color);
 }
 
 QString AppUtils::constructStyleSheet(const QString &widget,
                                       const QStringList &colors) const
 {
-    QString styleSheet;
-    const QString suffix = (colors.isEmpty())
-                           ? "StyleSheetBase"
-                           : "StyleSheet";
+    if (colors.isEmpty())
+        return getStyleSheet(widget);
 
-    const QString filePath = QString(":/style/resources/%1%2.txt").arg(widget,
-                                                                       suffix);
-    qDebug() << filePath;
-    QFile styleSheetFile(filePath);
-    if (styleSheetFile.open(QIODevice::ReadOnly | QIODevice::Text))
+    QString styleSheet = getStyleSheet(widget, false);
+    for (auto nextColor = colors.cbegin(); nextColor < colors.cend(); ++nextColor)
     {
-        QTextStream in(&styleSheetFile);
-        while (!in.atEnd())
-            styleSheet += in.readLine();
-
-        if (!colors.isEmpty())
-        {
-            for (auto nextColor = colors.cbegin(); nextColor < colors.cend(); ++nextColor)
-            {
-                styleSheet = styleSheet.arg(*nextColor);
-            }
-        }
+        styleSheet = styleSheet.arg(*nextColor);
     }
 
-    //qDebug() << styleSheet;
     return styleSheet;
 }
 

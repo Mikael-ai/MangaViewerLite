@@ -35,16 +35,18 @@ public:
     QVariantMap getConfig(bool needToReload = false);
     void saveConfig(const QVariantMap &config);
 
+    QVariant getConfigValue(const QString &key) const;
+
     inline QString getTempDirPath() const { return tempDirPath; };
     inline QString getSettingsDirPath() const { return settingsDirPath; };
 
-    inline QString getBackground() const { return m_background; }
-    inline void setBackground(const QString &background) { m_background = background; }
-
+    QString getStyleSheet(const QString &widget,
+                          const bool isBase = true) const;
     QString constructStyleSheet(const QString &widget,
                                 const QString &color = QString()) const;
     QString constructStyleSheet(const QString &widget,
                                 const QStringList &colors = QStringList()) const;
+    // Really big (at least I think so)
     QString getBigAssScrollAreaStyleSheet(const QString &color) const;
 
     void checkAppDirs();

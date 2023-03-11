@@ -47,7 +47,7 @@ void BaseSettings::on_saveButton_released()
     config[key_sheetWidth] = ui->widthLineEdit->text().toUInt();
     config[key_vScrollStep] = ui->vscrollLineEdit->text().toUInt();
     config[key_hScrollStep] = ui->hscrollLineEdit->text().toUInt();
-    config[key_background] = appUtils->getBackground();
+    config[key_background] = lastPickedBackground;
 
     appUtils->saveConfig(config);
 
@@ -58,11 +58,16 @@ void BaseSettings::on_saveButton_released()
 
 void BaseSettings::on_backgroundButton_released()
 {
-    QColor selectedColor = appUtils->getBackground();
-    const QString selectedColorName = QColorDialog::getColor(selectedColor).name();
+    QColor selectedColor = appUtils->getConfigValue(key_background).toString();
+    QString selectedColorName = QColorDialog::getColor(selectedColor).name();
+    if (selectedColorName == QStringLiteral("#000000"))
+        selectedColorName = lastPickedBackground;
+    else
+        lastPickedBackground = selectedColorName;
 
-    appUtils->setBackground(selectedColorName);
     ui->backgroundButton->setStyleSheet(appUtils->constructStyleSheet("backgroundButton",
                                                                       selectedColorName));
+    qDebug() << appUtils->constructStyleSheet("backgroundButton",
+                                              selectedColorName);
 }
 

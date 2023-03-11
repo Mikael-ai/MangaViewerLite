@@ -123,7 +123,6 @@ void MangaViewer::updateStyle(const uint32_t sheetWidth,
     hScrollBar->setSingleStep(hScrollStep);
     ui->centralwidget->setStyleSheet(appUtils->constructStyleSheet("centalWidget",
                                                                    background));
-    appUtils->setBackground(background);
     ui->scrollArea->setStyleSheet(appUtils->getBigAssScrollAreaStyleSheet(background));
 }
 
