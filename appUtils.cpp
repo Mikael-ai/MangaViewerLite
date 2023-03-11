@@ -175,10 +175,18 @@ void AppUtils::unzipFile(const QString &filePath) const
 void AppUtils::cleanTempDir() const
 {
     QDir temp(tempDirPath);
-    temp.setFilter( QDir::NoDotAndDotDot | QDir::Files );
-    foreach (const auto &filename, temp.entryList())
+    foreach (const auto &fileInfo, temp.entryInfoList(QDir::NoDotAndDotDot
+                                                      | QDir::System
+                                                      | QDir::Hidden
+                                                      | QDir::AllDirs
+                                                      | QDir::Files))
     {
-        temp.remove(filename);
+        if (fileInfo.isDir())
+        {
+            QDir().rmdir(fileInfo.absoluteFilePath());
+            continue;
+        }
+        QFile::remove(fileInfo.absoluteFilePath());
     }
 }
 

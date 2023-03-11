@@ -5,13 +5,13 @@
 #include "appUtils.h"
 
 #include <QLabel>
-#include <QDebug>
 #include <QDir>
 #include <QMenu>
 #include <QApplication>
-#include <QJsonDocument>
 #include <QFileDialog>
 #include <QKeyEvent>
+#include <QMimeData>
+#include <QImageReader>
 
 MangaViewer::MangaViewer(QWidget *parent)
     : QMainWindow(parent)
@@ -20,6 +20,7 @@ MangaViewer::MangaViewer(QWidget *parent)
     ui->setupUi(this);
 
     setWindowTitle(QStringLiteral("Manga Viewer Lite"));
+    this->setAcceptDrops(true);
 
     layout = new QVBoxLayout(ui->scrollAreaWidgetContents);
     layout->setAlignment(Qt::AlignCenter);
@@ -37,7 +38,7 @@ MangaViewer::MangaViewer(QWidget *parent)
 
     loadConfigFromVariant(appUtils->getConfig(true));
 
-    openFolder("D:/Manga/Claymore/1-1");
+    //openFolder("D:/Manga/Claymore/1-1");
 
     connect(ui->centralwidget, SIGNAL(customContextMenuRequested(QPoint)),
             this, SLOT(showContextMenu(QPoint)));
@@ -83,18 +84,45 @@ void MangaViewer::openFolder(const QString &path)
         currentFilePath = path;
 }
 
+void MangaViewer::openFiles(QStringList &urls)
+{
+    closeCurrentManga();
+    urls.sort(Qt::CaseInsensitive);
+
+    foreach (QString url, urls)
+    {
+        if (QImageReader(url).imageFormat() == QImage::Format_Invalid)
+            continue;
+
+        if (url.startsWith("file:///"))
+            url.remove("file:///");
+
+        QPixmap sheetPixmap(url);
+        QLabel *sheet = new QLabel(ui->scrollAreaWidgetContents);
+        sheet->setPixmap((m_sheetWidth != 0)
+                         ? sheetPixmap.scaledToWidth(m_sheetWidth,
+                                                     Qt::SmoothTransformation)
+                         : sheetPixmap);
+        layout->addWidget(sheet);
+        sheet->setAlignment(Qt::AlignHCenter);
+        sheets[sheet] = sheetPixmap;
+    }
+}
+
 void MangaViewer::closeCurrentManga()
 {
     if (sheets.isEmpty())
         return;
 
-    QLayoutItem *child = nullptr;
-    while ((child = layout->takeAt(0)))
+    const QPixmap emptyPixmap;
+    foreach (QLabel *sheet, sheets.keys())
     {
-        delete child;
-        child = Q_NULLPTR;
+        delete sheet;
+        sheet = Q_NULLPTR;
     }
     sheets.clear();
+
+    appUtils->cleanTempDir();
 }
 
 void MangaViewer::setWidthValue(const uint32_t newWitdh)
@@ -130,6 +158,56 @@ void MangaViewer::updateStyle(const uint32_t sheetWidth,
     ui->centralwidget->setStyleSheet(appUtils->constructStyleSheet("centalWidget",
                                                                    background));
     ui->scrollArea->setStyleSheet(appUtils->getBigAssScrollAreaStyleSheet(background));
+}
+
+void MangaViewer::dragEnterEvent(QDragEnterEvent *event)
+{
+    if (event->mimeData()->hasUrls())
+        event->accept();
+    else
+        event->ignore();
+}
+
+void MangaViewer::dragLeaveEvent(QDragLeaveEvent *event)
+{
+    event->accept();
+}
+
+void MangaViewer::dropEvent(QDropEvent *event)
+{
+    QList<QUrl> urls = event->mimeData()->urls();
+    if (urls.isEmpty())
+        event->ignore();
+
+    event->accept();
+    if (urls.size() == 1)
+    {
+        QFileInfo file(event->mimeData()->text().remove("file:///"));
+        if (file.isDir())
+        {
+            openFolder(file.absoluteFilePath());
+            return;
+        }
+        else if (file.isFile())
+        {
+            const QString extention = file.suffix();
+            if (extention == QStringLiteral("cbr")
+                || extention == QStringLiteral("zip")
+                || extention == QStringLiteral("rar")
+                || extention == QStringLiteral("7z"))
+            {
+                appUtils->cleanTempDir();
+                appUtils->unzipFile(file.absoluteFilePath());
+                openFolder(appUtils->getTempDirPath());
+                return;
+            }
+        }
+    }
+
+    QStringList urlsList = QUrl::toStringList(urls);
+    openFiles(urlsList);
+
+    event->accept();
 }
 
 bool MangaViewer::event(QEvent *event)
@@ -170,9 +248,13 @@ void MangaViewer::showContextMenu(const QPoint &pos)
     lastContextMenuPos = pos;
 
     QScopedPointer<QMenu> contextMenu(new QMenu());
+    // Sub menu
     QScopedPointer<QMenu> openFileSubMenu(contextMenu->addMenu("Open..."));
-    openFileSubMenu->addAction(tr("File"), this, SLOT(actionOpenFileClicked()));
+    openFileSubMenu->addAction(tr("Manga file"), this, SLOT(actionOpenMangaFileClicked()));
     openFileSubMenu->addAction(tr("Folder"), this, SLOT(actionOpenFolderClicked()));
+    openFileSubMenu->addAction(tr("Images"), this, SLOT(actionOpenImagesClicked()));
+    // Main menu
+    contextMenu->addAction(tr("Close file"), this, SLOT(closeCurrentManga()));
     contextMenu->addAction(tr("Settings"), this, SLOT(actionSettingsClicked()));
     contextMenu->addAction(tr("Exit"), this, SLOT(actionExitClicked()));
 
@@ -180,7 +262,7 @@ void MangaViewer::showContextMenu(const QPoint &pos)
     contextMenu->exec(globalPosition);
 }
 
-void MangaViewer::actionOpenFileClicked()
+void MangaViewer::actionOpenMangaFileClicked()
 {
     QString filePath = QFileDialog::getOpenFileName(this,
                                                     tr("Open file"),
@@ -191,7 +273,6 @@ void MangaViewer::actionOpenFileClicked()
     if (filePath.isEmpty())
         return;
 
-    appUtils->cleanTempDir();
     appUtils->unzipFile(filePath);
     openFolder(appUtils->getTempDirPath());
 }
@@ -208,6 +289,22 @@ void MangaViewer::actionOpenFolderClicked()
         return;
 
     openFolder(folderPath);
+}
+
+void MangaViewer::actionOpenImagesClicked()
+{
+    QFileDialog dialog(this);
+    dialog.setDirectory(QDir(lastChosenPath).exists()
+                        ? lastChosenPath
+                        : lastChosenPath = QDir::currentPath());
+    dialog.setFileMode(QFileDialog::ExistingFiles);
+    dialog.setNameFilter(tr("Images (*.png *.jpg *.jpeg *.xpm *.bmp *.gif)"));
+
+    QStringList images;
+    if (dialog.exec())
+        images = dialog.selectedFiles();
+
+    openFiles(images);
 }
 
 void MangaViewer::actionSettingsClicked()
