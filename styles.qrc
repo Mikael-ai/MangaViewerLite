@@ -6,5 +6,6 @@
         <file>resources/scrollAreaStyleSheet.txt</file>
         <file>resources/backgroundButtonStyleSheetBase.txt</file>
         <file>resources/backgroundButtonStyleSheet.txt</file>
+        <file>resources/menuStyleSheetBase.txt</file>
     </qresource>
 </RCC>

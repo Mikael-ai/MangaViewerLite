@@ -114,7 +114,6 @@ void MangaViewer::closeCurrentManga()
     if (sheets.isEmpty())
         return;
 
-    const QPixmap emptyPixmap;
     foreach (QLabel *sheet, sheets.keys())
     {
         delete sheet;
@@ -258,6 +257,20 @@ void MangaViewer::showContextMenu(const QPoint &pos)
     contextMenu->addAction(tr("Close file"), this, SLOT(closeCurrentManga()));
     contextMenu->addAction(tr("Settings"), this, SLOT(actionSettingsClicked()));
     contextMenu->addAction(tr("Exit"), this, SLOT(actionExitClicked()));
+
+    const QFont sitkaText("Sitka Text", 14);
+    const QString styleSheet = appUtils->getStyleSheet("menu");
+
+    contextMenu->setFont(sitkaText);
+    contextMenu->setStyleSheet(styleSheet);
+    contextMenu->setMinimumSize(QSize(100, 70));
+    contextMenu->setAttribute(Qt::WA_TranslucentBackground);
+    contextMenu->setWindowFlag(Qt::FramelessWindowHint);
+
+    openFileSubMenu->setFont(sitkaText);
+    openFileSubMenu->setAttribute(Qt::WA_TranslucentBackground);
+    contextMenu->setStyleSheet(styleSheet);
+    openFileSubMenu->setWindowFlag(Qt::FramelessWindowHint);
 
     QPoint globalPosition = this->mapToGlobal(pos);
     contextMenu->exec(globalPosition);

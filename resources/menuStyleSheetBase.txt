@@ -1,0 +1,21 @@
+QMenu {
+    	background-color: #2b2e34;
+	border: 2px solid black;
+    	border-radius: 6px;
+	margin: 2px;
+}
+
+QMenu::item {
+	background-color: transparent;
+	border-radius: 6px;
+	padding: 2px 25px 2px 20px;
+	color: rgb(255, 255, 255);
+	margin: 2px;
+}
+
+QMenu::item:selected {
+	background-color: #3c3e52;
+	border-radius: 6px;
+	color: rgb(255, 255, 255);
+	margin: 2px;
+}

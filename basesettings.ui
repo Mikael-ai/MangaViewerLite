@@ -73,6 +73,7 @@
        </property>
        <property name="font">
         <font>
+         <family>Sitka Text</family>
          <pointsize>11</pointsize>
         </font>
        </property>
@@ -145,6 +146,7 @@
        </property>
        <property name="font">
         <font>
+         <family>Sitka Text</family>
          <pointsize>11</pointsize>
         </font>
        </property>
@@ -211,6 +213,7 @@
        </property>
        <property name="font">
         <font>
+         <family>Sitka Text</family>
          <pointsize>11</pointsize>
         </font>
        </property>

@@ -14,10 +14,12 @@ BaseSettings::BaseSettings(QWidget *mainWindow,
     ui->setupUi(this);
     setWindowTitle(tr("Settings"));
 
-    setUiValues(appUtils->getConfig());
+    setUiValues(appUtils->getConfig(true));
 
     connect(this, SIGNAL(settingsWereSaved(QVariantMap)),
             mainWindow, SLOT(loadConfigFromVariant(QVariantMap)));
+
+    lastPickedBackground = appUtils->getConfigValue(key_background).toString();
 }
 
 BaseSettings::~BaseSettings()
@@ -49,6 +51,8 @@ void BaseSettings::on_saveButton_released()
     config[key_hScrollStep] = ui->hscrollLineEdit->text().toUInt();
     config[key_background] = lastPickedBackground;
 
+    qDebug() << lastPickedBackground;
+
     appUtils->saveConfig(config);
 
     emit settingsWereSaved(config);
@@ -58,16 +62,22 @@ void BaseSettings::on_saveButton_released()
 
 void BaseSettings::on_backgroundButton_released()
 {
-    QColor selectedColor = appUtils->getConfigValue(key_background).toString();
+    qDebug() << "in config = " << appUtils->getConfigValue(key_background).toString();
+    QColor selectedColor(appUtils->getConfigValue(key_background).toString());
     QString selectedColorName = QColorDialog::getColor(selectedColor).name();
-    if (selectedColorName == QStringLiteral("#000000"))
-        selectedColorName = lastPickedBackground;
-    else
-        lastPickedBackground = selectedColorName;
+    qDebug() << "selected = " << selectedColorName;
+    /*
+    if ((selectedColorName == QStringLiteral("#000000")
+         && selectedColorName != lastPickedBackground)
+        || selectedColorName.isEmpty())
+    {
+        lastPickedBackground = appUtils->getConfigValue(key_background).toString();
+        return;
+    }*/
+
+    lastPickedBackground = selectedColorName;
 
     ui->backgroundButton->setStyleSheet(appUtils->constructStyleSheet("backgroundButton",
                                                                       selectedColorName));
-    qDebug() << appUtils->constructStyleSheet("backgroundButton",
-                                              selectedColorName);
 }
 

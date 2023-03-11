@@ -10,8 +10,9 @@ AppUtils::AppUtils()
 {
     getConfig(true);
 
-    tempDirPath = QDir::currentPath() % QString("/temp");
-    settingsDirPath = QDir::currentPath() % QString("/settings");
+    m_tempDirPath = QDir::currentPath() % QString("/temp");
+    m_settingsDirPath = QDir::currentPath() % QString("/settings");
+
     checkAppDirs();
 }
 
@@ -48,7 +49,7 @@ void AppUtils::saveConfig(const QVariantMap &config)
 {
     QJsonDocument jsonConfig = QJsonDocument::fromVariant(config);
 
-    const QString pathToJsonConfig = settingsDirPath % QString("/config.json");
+    const QString pathToJsonConfig = m_settingsDirPath % QString("/config.json");
     QFile jsonConfigFile(pathToJsonConfig);
     jsonConfigFile.open(QFile::WriteOnly);
     jsonConfigFile.write(jsonConfig.toJson());
@@ -146,10 +147,10 @@ QString AppUtils::getBigAssScrollAreaStyleSheet(const QString &color) const
 
 void AppUtils::checkAppDirs()
 {
-    QDir temp(tempDirPath);
-    QDir settings(settingsDirPath);
+    QDir temp(m_tempDirPath);
+    QDir settings(m_settingsDirPath);
     if (!temp.exists())
-        temp.mkdir(tempDirPath);
+        temp.mkdir(m_tempDirPath);
     if (!settings.exists())
     {
         QVariantMap config;
@@ -158,7 +159,7 @@ void AppUtils::checkAppDirs()
         config[key_vScrollStep] = defaultVScrollStep;
         config[key_background] = defaultBackground;
 
-        settings.mkdir(settingsDirPath);
+        settings.mkdir(m_settingsDirPath);
         saveConfig(config);
     }
 }
@@ -169,12 +170,12 @@ void AppUtils::unzipFile(const QString &filePath) const
     if (!zipReader.exists())
         return;
 
-    zipReader.extractAll(tempDirPath);
+    zipReader.extractAll(m_tempDirPath);
 }
 
 void AppUtils::cleanTempDir() const
 {
-    QDir temp(tempDirPath);
+    QDir temp(m_tempDirPath);
     foreach (const auto &fileInfo, temp.entryInfoList(QDir::NoDotAndDotDot
                                                       | QDir::System
                                                       | QDir::Hidden
