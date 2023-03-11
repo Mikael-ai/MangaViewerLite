@@ -11,12 +11,15 @@
 #include <QApplication>
 #include <QJsonDocument>
 #include <QFileDialog>
+#include <QKeyEvent>
 
 MangaViewer::MangaViewer(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MangaViewer)
 {
     ui->setupUi(this);
+
+    setWindowTitle(QStringLiteral("Manga Viewer Lite"));
 
     layout = new QVBoxLayout(ui->scrollAreaWidgetContents);
     layout->setAlignment(Qt::AlignCenter);
@@ -28,6 +31,9 @@ MangaViewer::MangaViewer(QWidget *parent)
     ui->scrollArea->setHorizontalScrollBar(hScrollBar);
 
     ui->centralwidget->setContextMenuPolicy(Qt::CustomContextMenu);
+
+    const QString background = appUtils->getBigAssScrollAreaStyleSheet(appUtils->getConfigValue(key_background).toString());
+    ui->scrollArea->setStyleSheet(background);
 
     loadConfigFromVariant(appUtils->getConfig(true));
 
@@ -126,6 +132,28 @@ void MangaViewer::updateStyle(const uint32_t sheetWidth,
     ui->scrollArea->setStyleSheet(appUtils->getBigAssScrollAreaStyleSheet(background));
 }
 
+bool MangaViewer::event(QEvent *event)
+{
+    if (event->type() == QEvent::KeyPress)
+    {
+        QKeyEvent *ke = static_cast<QKeyEvent *>(event);
+        if (ke->key() == Qt::Key_Space)
+        {
+            setWindowState((windowState() == Qt::WindowFullScreen)
+                           ? Qt::WindowNoState
+                           : Qt::WindowFullScreen);
+            return true;
+        }
+    }
+    return QMainWindow::event(event);
+}
+
+void MangaViewer::closeEvent(QCloseEvent *event)
+{
+    appUtils->clean();
+    return QMainWindow::closeEvent(event);
+}
+
 void MangaViewer::updateSheetWidth()
 {
     foreach (auto &sheet, sheets.keys())
@@ -135,12 +163,6 @@ void MangaViewer::updateSheetWidth()
                                                        Qt::SmoothTransformation)
                          : sheets[sheet]);
     }
-}
-
-void MangaViewer::changeBackround(const QString &background)
-{
-    ui->centralwidget->setStyleSheet(QString("QWidget { background-color: ") % background % QString("; }"));
-    ui->scrollArea->setStyleSheet(appUtils->getBigAssScrollAreaStyleSheet(background));
 }
 
 void MangaViewer::showContextMenu(const QPoint &pos)

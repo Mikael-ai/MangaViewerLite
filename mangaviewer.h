@@ -41,11 +41,14 @@ public:
                      const uint32_t vScrollStep,
                      const uint32_t hScrollStep,
                      const QString &background);
+
+    bool event(QEvent *event) Q_DECL_OVERRIDE;
+    void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
+
 public slots:
     void showContextMenu(const QPoint &pos);
     void loadConfigFromVariant(const QVariantMap &config);
     void updateSheetWidth();
-    void changeBackround(const QString &background);
 
     void actionExitClicked();
     void actionSettingsClicked();

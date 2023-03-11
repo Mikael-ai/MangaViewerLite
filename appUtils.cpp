@@ -181,3 +181,8 @@ void AppUtils::cleanTempDir() const
         temp.remove(filename);
     }
 }
+
+void AppUtils::clean() const
+{
+    this->~AppUtils();
+}

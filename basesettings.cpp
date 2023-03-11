@@ -14,7 +14,7 @@ BaseSettings::BaseSettings(QWidget *mainWindow,
     ui->setupUi(this);
     setWindowTitle(tr("Settings"));
 
-    setUiValues(appUtils->getConfig(true));
+    setUiValues(appUtils->getConfig());
 
     connect(this, SIGNAL(settingsWereSaved(QVariantMap)),
             mainWindow, SLOT(loadConfigFromVariant(QVariantMap)));

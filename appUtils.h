@@ -53,6 +53,8 @@ public:
 
     void unzipFile(const QString &filePath) const;
     void cleanTempDir() const;
+
+    void clean() const;
 };
 
 
