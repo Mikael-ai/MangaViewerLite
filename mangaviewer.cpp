@@ -26,13 +26,12 @@ MangaViewer::MangaViewer(QWidget *parent)
 
     ui->scrollArea->setVerticalScrollBar(vScrollBar);
     ui->scrollArea->setHorizontalScrollBar(hScrollBar);
-    ui->scrollArea->setStyleSheet(appUtils->getBigAssScrollAreaStyleSheet());
 
     ui->centralwidget->setContextMenuPolicy(Qt::CustomContextMenu);
 
     loadConfigFromVariant(appUtils->getConfig(true));
 
-    //openFolder("D:/Manga/Claymore/1-1");
+    openFolder("D:/Manga/Claymore/1-1");
 
     connect(ui->centralwidget, SIGNAL(customContextMenuRequested(QPoint)),
             this, SLOT(showContextMenu(QPoint)));
@@ -108,15 +107,24 @@ void MangaViewer::loadConfigFromVariant(const QVariantMap &config)
     const uint32_t hScrollStep = config.value(key_hScrollStep, defaultHScrollStep).toUInt();
     const QString background = config.value(key_background, defaultBackground).toString();
 
-    const QString centalWidgetStyleSheet = QString("QWidget { background-color: %1; } ")
-            .arg(background);
+    updateStyle(sheetWidth,
+                vScrollStep,
+                hScrollStep,
+                background);
+}
 
+void MangaViewer::updateStyle(const uint32_t sheetWidth,
+                              const uint32_t vScrollStep,
+                              const uint32_t hScrollStep,
+                              const QString &background)
+{
     setWidthValue(sheetWidth);
     vScrollBar->setSingleStep(vScrollStep);
     hScrollBar->setSingleStep(hScrollStep);
-    ui->centralwidget->setStyleSheet(centalWidgetStyleSheet);
-
+    ui->centralwidget->setStyleSheet(appUtils->constructStyleSheet("centalWidget",
+                                                                   background));
     appUtils->setBackground(background);
+    ui->scrollArea->setStyleSheet(appUtils->getBigAssScrollAreaStyleSheet(background));
 }
 
 void MangaViewer::updateSheetWidth()
@@ -133,6 +141,7 @@ void MangaViewer::updateSheetWidth()
 void MangaViewer::changeBackround(const QString &background)
 {
     ui->centralwidget->setStyleSheet(QString("QWidget { background-color: ") % background % QString("; }"));
+    ui->scrollArea->setStyleSheet(appUtils->getBigAssScrollAreaStyleSheet(background));
 }
 
 void MangaViewer::showContextMenu(const QPoint &pos)

@@ -37,6 +37,10 @@ public:
     void closeCurrentManga();
     void setWidthValue(const uint32_t newWitdh);
 
+    void updateStyle(const uint32_t sheetWidth,
+                     const uint32_t vScrollStep,
+                     const uint32_t hScrollStep,
+                     const QString &background);
 public slots:
     void showContextMenu(const QPoint &pos);
     void loadConfigFromVariant(const QVariantMap &config);

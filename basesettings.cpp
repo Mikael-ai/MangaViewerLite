@@ -37,7 +37,8 @@ void BaseSettings::setUiValues(QVariantMap config)
     ui->widthLineEdit->setText(QString::number(sheetWidth));
     ui->vscrollLineEdit->setText(QString::number(vScrollStep));
     ui->hscrollLineEdit->setText(QString::number(hScrollStep));
-    ui->backgroundButton->setStyleSheet(appUtils->getBackgroundStyleSheet(background));
+    ui->backgroundButton->setStyleSheet(appUtils->constructStyleSheet("backgroundButton",
+                                                                      background));
 }
 
 void BaseSettings::on_saveButton_released()
@@ -57,11 +58,11 @@ void BaseSettings::on_saveButton_released()
 
 void BaseSettings::on_backgroundButton_released()
 {
-    const QString selectedColor = QColorDialog::getColor(QColor(appUtils->getBackground())).name();
-    if (selectedColor == QStringLiteral("#000000"))
-        return;
+    QColor selectedColor = appUtils->getBackground();
+    const QString selectedColorName = QColorDialog::getColor(selectedColor).name();
 
-    appUtils->setBackground(selectedColor);
-    ui->backgroundButton->setStyleSheet(appUtils->getBackgroundStyleSheet(selectedColor));
+    appUtils->setBackground(selectedColorName);
+    ui->backgroundButton->setStyleSheet(appUtils->constructStyleSheet("backgroundButton",
+                                                                      selectedColorName));
 }
 

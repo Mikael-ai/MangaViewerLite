@@ -1,5 +1,10 @@
 <RCC>
     <qresource prefix="/style">
-        <file>resources/ScrollAreaStyleSheet.txt</file>
+        <file>resources/centalWidgetStyleSheetBase.txt</file>
+        <file>resources/centalWidgetStyleSheet.txt</file>
+        <file>resources/scrollAreaStyleSheetBase.txt</file>
+        <file>resources/scrollAreaStyleSheet.txt</file>
+        <file>resources/backgroundButtonStyleSheetBase.txt</file>
+        <file>resources/backgroundButtonStyleSheet.txt</file>
     </qresource>
 </RCC>

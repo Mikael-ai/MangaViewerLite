@@ -2,7 +2,7 @@
 
 QScrollBar:vertical {
 	border: none;
-    	background: %1;
+    	background: rgb(45, 45, 68);
     	width: 14px;
    	margin: 15px 0 15px 0;
 	border-radius: 0px;
@@ -10,18 +10,18 @@ QScrollBar:vertical {
 
 /*  HANDLE BAR VERTICAL */
 QScrollBar::handle:vertical {
-	background-color: %2;
+	background-color: rgb(80, 80, 122);
 	min-height: 30px;
 	border-radius: 5px;
 }
 QScrollBar::handle:vertical:hover{
-	background-color: %3;
+	background-color: rgb(80, 100, 160);
 }
 
 /* BTN TOP - SCROLLBAR */
 QScrollBar::sub-line:vertical {
 	border: none;
-	background-color: %4;
+	background-color: rgb(59, 59, 90);
 	height: 15px;
 	border-top-left-radius: 7px;
 	border-top-right-radius: 7px;
@@ -29,13 +29,13 @@ QScrollBar::sub-line:vertical {
 	subcontrol-origin: margin;
 }
 QScrollBar::sub-line:vertical:hover {
-	background-color: %3;
+	background-color: rgb(80, 100, 160);
 }
 
 /* BTN BOTTOM - SCROLLBAR */
 QScrollBar::add-line:vertical {
 	border: none;
-	background-color: %4;
+	background-color: rgb(59, 59, 90);
 	height: 15px;
 	border-bottom-left-radius: 7px;
 	border-bottom-right-radius: 7px;
@@ -43,7 +43,7 @@ QScrollBar::add-line:vertical {
 	subcontrol-origin: margin;
 }
 QScrollBar::add-line:vertical:hover {
-	background-color: %3;
+	background-color: rgb(80, 100, 160);
 }
 
 /* RESET ARROW */
@@ -59,7 +59,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
 
  QScrollBar:horizontal {
 	border: none;
-    background: %1;
+    background: rgb(45, 45, 68);
     height: 14px;
     margin: 0 15px 0 15px;
 	border-radius: 0px;
@@ -67,18 +67,18 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
 
 /*  HANDLE BAR HORIZONTAL */
 QScrollBar::handle:horizontal {
-	background-color: %2;
+	background-color: rgb(80, 80, 122);
 	min-width: 30px;
 	border-radius: 5px;
 }
 QScrollBar::handle:horizontal:hover{
-	background-color: %3;
+	background-color: rgb(80, 100, 160);
 }
 
 /* BTN TOP - SCROLLBAR */
 QScrollBar::sub-line:horizontal {
 	border: none;
-	background-color: %4;
+	background-color: rgb(59, 59, 90);
 	width: 15px;
 	border-top-left-radius: 7px;
 	border-bottom-left-radius: 7px;
@@ -86,13 +86,13 @@ QScrollBar::sub-line:horizontal {
 	subcontrol-origin: margin;
 }
 QScrollBar::sub-line:horizontal:hover {
-	background-color: %3;
+	background-color: rgb(80, 100, 160);
 }
 
 /* BTN BOTTOM - SCROLLBAR */
 QScrollBar::add-line:horizontal {
 	border: none;
-	background-color: %4;
+	background-color: rgb(59, 59, 90);
 	width: 15px;
 	border-top-right-radius: 7px;
 	border-bottom-right-radius: 7px;
@@ -100,7 +100,7 @@ QScrollBar::add-line:horizontal {
 	subcontrol-origin: margin;
 }
 QScrollBar::add-line:horizontal:hover {
-	background-color: %3;
+	background-color: rgb(80, 100, 160);
 }
 
 /* RESET ARROW */
