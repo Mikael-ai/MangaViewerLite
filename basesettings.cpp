@@ -52,8 +52,6 @@ void BaseSettings::on_saveButton_released()
     config[key_hScrollStep] = ui->hscrollLineEdit->text().toUInt();
     config[key_background] = lastPickedBackground;
 
-    qDebug() << lastPickedBackground;
-
     appUtils->saveConfig(config);
 
     emit settingsWereSaved(config);
