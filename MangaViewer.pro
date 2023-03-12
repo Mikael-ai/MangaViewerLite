@@ -3,6 +3,12 @@ QT       += gui-private
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
+VERSION = 1.0
+QMAKE_TARGET_COMPANY = Mikael Airapetyan
+QMAKE_TARGET_PRODUCT = Manga Viewer Lite
+QMAKE_TARGET_DESCRIPTION = Simple manga viewer
+QMAKE_TARGET_COPYRIGHT = Mikael Airapetyan
+
 CONFIG += c++17
 
 # You can make your code fail to compile if it uses deprecated APIs.
@@ -35,3 +41,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     styles.qrc
+
+RC_FILE = mangaViewer.rc
+

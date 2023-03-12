@@ -7,5 +7,6 @@
         <file>resources/backgroundButtonStyleSheetBase.txt</file>
         <file>resources/backgroundButtonStyleSheet.txt</file>
         <file>resources/menuStyleSheetBase.txt</file>
+        <file>resources/appIcon.ico</file>
     </qresource>
 </RCC>
