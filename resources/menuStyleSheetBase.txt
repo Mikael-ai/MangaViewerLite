@@ -9,7 +9,7 @@ QMenu::item {
 	background-color: transparent;
 	border-radius: 6px;
 	padding: 2px 25px 2px 20px;
-	color: rgb(255, 255, 255);
+	color: #e7e2d6;
 	margin: 2px;
 }
 
