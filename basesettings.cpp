@@ -12,13 +12,10 @@ BaseSettings::BaseSettings(QWidget *mainWindow,
       ui(new Ui::BaseSettings)
 {
     ui->setupUi(this);
-
-    setMinimumSize(QSize(380, 250));
-    setMaximumSize(QSize(380, 250));
-
-    setWindowTitle(tr("Settings"));
-
     setUiValues(appUtils->getConfig(true));
+
+    setFixedSize(QSize(380, 250));
+    setWindowTitle(tr("Settings"));
 
     connect(this, SIGNAL(settingsWereSaved(QVariantMap)),
             mainWindow, SLOT(loadConfigFromVariant(QVariantMap)));

@@ -33,8 +33,8 @@ MangaViewer::MangaViewer(QWidget *parent)
 
     ui->centralwidget->setContextMenuPolicy(Qt::CustomContextMenu);
 
-    const QString background = appUtils->getBigAssScrollAreaStyleSheet(appUtils->getConfigValue(key_background).toString());
-    ui->scrollArea->setStyleSheet(background);
+    const QString background = appUtils->getConfigValue(key_background).toString();
+    ui->scrollArea->setStyleSheet(appUtils->getBigAssScrollAreaStyleSheet(background));
 
     loadConfigFromVariant(appUtils->getConfig(true));
 
