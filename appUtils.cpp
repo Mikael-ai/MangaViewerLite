@@ -108,39 +108,41 @@ QString AppUtils::constructStyleSheet(const QString &widget,
 
 QString AppUtils::getBigAssScrollAreaStyleSheet(const QString &color) const
 {
-    QStringList colors;
     int hue, saturation, value;
     QColor baseColor(color);
     baseColor.getHsv(&hue, &saturation, &value);
 
-    // Here is where the magic numbers part starts :)
-    QColor colorA, colorB, colorC, colorD;
     // Minimum value for each ScrollBar part = 30 out of 255, otherwise it's too dark
     value = (value < 30) ? 30 : value;
 
     // P.S. If the color is dark - it picks something brighter and vice versa
+    QColor scrollLine, slider, hover, buttons;
+    const int scrollLineHue = hue;
+    const int scrollLineSaturation = saturation;
+    const int scrollLineValue = (value * 1.25 < 255) ? value * 1.25 : value * 0.75;
 
-    // Scroll line color
-    colorA.setHsl(hue,
-                  saturation,
-                  (value * 1.25 < 255) ? value * 1.25 : value * 0.75);
-    // Slider color
-    colorB.setHsl(hue,
-                  saturation,
-                  (value * 1.60 < 255) ? value * 1.60 : value * 0.40);
-    // Hover color for slider and buttons
-    colorC.setHsl((hue * 1.05 < 400) ? hue * 1.05 : hue * 0.95,
-                  (saturation * 1.35 < 255) ? saturation * 1.35 : saturation * 0.65,
-                  (value * 1.70 < 255) ? value * 1.70 : value * 0.20);
-    // Buttons color
-    colorD.setHsl(hue,
-                  (saturation * 1.15 < 255) ? saturation * 1.15 : saturation * 0.85,
-                  (value * 1.60 < 255) ? value * 1.60 : value * 0.40);
+    const int sliderHue = hue;
+    const int sliderSaturation = saturation;
+    const int sliderValue = (value * 1.60 < 255) ? value * 1.60 : value * 0.40;
 
-    colors << colorA.name()
-           << colorB.name()
-           << colorC.name()
-           << colorD.name();
+    const int hoverHue = (hue * 1.05 < 400) ? hue * 1.05 : hue * 0.95;
+    const int hoverSaturation = (saturation * 1.35 < 255) ? saturation * 1.35 : saturation * 0.65;
+    const int hoverValue = (value * 1.70 < 255) ? value * 1.70 : value * 0.20;
+
+    const int buttonsHue = hue;
+    const int buttonsSaturation = (saturation * 1.15 < 255) ? saturation * 1.15 : saturation * 0.85;
+    const int buttonsValue = (value * 1.60 < 255) ? value * 1.60 : value * 0.40;
+
+    scrollLine.setHsl(scrollLineHue, scrollLineSaturation, scrollLineValue);
+    slider.setHsl(sliderHue, sliderSaturation, sliderValue);
+    hover.setHsl(hoverHue, hoverSaturation, hoverValue);
+    buttons.setHsl(buttonsHue, buttonsSaturation, buttonsValue);
+
+    QStringList colors;
+    colors << scrollLine.name()
+           << slider.name()
+           << hover.name()
+           << buttons.name();
 
     return constructStyleSheet("scrollArea", colors);
 }
