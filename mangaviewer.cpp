@@ -282,7 +282,6 @@ void MangaViewer::showContextMenu(const QPoint &pos)
 
     openFileSubMenu->setFont(sitkaText);
     openFileSubMenu->setAttribute(Qt::WA_TranslucentBackground);
-    contextMenu->setStyleSheet(styleSheet);
     openFileSubMenu->setWindowFlag(Qt::FramelessWindowHint);
 
     QPoint globalPosition = this->mapToGlobal(pos);
