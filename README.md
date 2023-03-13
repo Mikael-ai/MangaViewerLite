@@ -7,5 +7,6 @@ Simple desktop manga viewer.
 - Change sheet width (or set to 0 for original sheet sizes);
 - Save your config (delete `.../settings/config.json` to reset everything);
 - Press `F11/Spacebar` for the fullscreen mode.
+- 
 ![alt text](https://i.postimg.cc/NjnsfDp9/1.png)
 ![alt text](https://i.postimg.cc/QhkFprFC/2.png)
