@@ -299,6 +299,7 @@ void MangaViewer::actionOpenMangaFileClicked()
     if (filePath.isEmpty())
         return;
 
+    closeCurrentManga();
     appUtils->unzipFile(filePath);
     openFolder(appUtils->getTempDirPath());
 }
@@ -314,6 +315,7 @@ void MangaViewer::actionOpenFolderClicked()
     if (folderPath.isEmpty())
         return;
 
+    closeCurrentManga();
     openFolder(folderPath);
 }
 
@@ -330,6 +332,7 @@ void MangaViewer::actionOpenImagesClicked()
     if (dialog.exec())
         images = dialog.selectedFiles();
 
+    closeCurrentManga();
     openFiles(images);
 }
 
